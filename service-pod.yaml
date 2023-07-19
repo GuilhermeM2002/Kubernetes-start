@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: service-pod
+  labels:
+    app: service
+    env: producao
+spec:
+  containers:
+  - name: service-image
+    image: GuilhermeM2002/sevice-image:1

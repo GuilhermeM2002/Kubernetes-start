@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: catalog-pod
+  labels:
+    app: catalog
+    env: producao
+spec:
+  containers:
+    - name: catalog-image
+      image: GuilhermeM2002/catalog-image:1
+      ports:
+        - containerPort: 80

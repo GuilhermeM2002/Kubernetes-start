@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shopping-cart-db-pod
+  labels:
+    name: shopping-cart
+spec:
+  containers:
+    - name: shopping-cart-container
+      image: GuilhermeM2002/cart-image:1
+      ports:
+        - containerPort: 3307
+      envFrom:
+        - configMapRef:
+            name: shopping-cart-configmap

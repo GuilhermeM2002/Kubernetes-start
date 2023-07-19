@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-db
+data:
+  MYSQL_ROOT_PASSWORD: Gm1507@#
+  MYSQL_DATABASE: shoppingCart
+  MYSQL_PASSWORD: Gm1507@#
