@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-cart-db-deployment
+spec:
+  template:
+    metadata:
+      name: shopping-cart-db
+      labels:
+        app: shopping-cart-db
+    spec:
+      containers:
+        - name: db-shopping-cart-container
+          image: guilhermem2002/shopping-cart-db-image:1
+          ports:
+            - containerPort: 3307
+          envFrom:
+            - configMapRef:
+                name: shopping-cart-db-configmap
+  selector:
+    matchLabels:
+      app: shopping-cart-db

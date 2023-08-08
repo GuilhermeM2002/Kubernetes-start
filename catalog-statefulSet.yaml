@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: catalog-statefulSet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: catalog
+      labels:
+        app: catalog
+    spec:
+      containers:
+        - name: catalog-container
+          image: guilhermem2002/catalog-image:1
+          ports:
+            - containerPort: 80
+      envFrom:
+        - configMapRef:
+            name: catalog-configmap
+      volumeMounts:
+        - name: product
+          mountPath: /home/www
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 3
+        initialDelaySeconds: 20
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 5
+        initialDelaySeconds: 3
+      volumes:
+        - name: product
+          persistentVolumeClaim:
+            claimName: product-pvc
+  selector:
+    matchLabels:
+      app: catalog
+  serviceName: catalog-svc

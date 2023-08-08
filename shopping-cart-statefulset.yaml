@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: shopping-cart-statefulset
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: shopping-cart
+      labels:
+        app: shopping-cart
+    spec:
+      containers:
+        - name: shopping-cart-container
+          image: guilhermem2002/shopping-cart-image:1
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+              name: shopping-cart-configmap
+          volumeMounts:
+            - name: cart
+              mountPath: /home/www
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+            failureThreshold: 5
+            initialDelaySeconds: 20
+      volumes:
+        - name: cart
+          persistentVolumeClaim:
+            claimName: cart-pvc
+  selector:
+    matchLabels:
+      app: shopping-cart
+  serviceName: shopping-cart-svc

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+spec:
+  template:
+    metadata:
+      name: gateway
+      labels:
+        app: gateway
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gateway
+    spec:
+      containers:
+        - name: gateway-container
+          image: guilhermem2002/gateway-image:1
+          ports:
+            - containerPort: 80
+      envFrom:
+        configMapRef:
+          name: gateway-configmap
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 3
+        initialDelaySeconds: 20
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 5
+        initialDelaySeconds: 20
+      resources:
+        requests:
+          cpu: 10m

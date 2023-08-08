@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-db-deployment
+spec:
+  template:
+    metadata:
+      name: catalog-db
+      labels:
+        app: catalog-db
+    spec:
+      containers:
+        - name: catalog-db-container
+          image: guilhermem2002/catalog-db-image:1
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - configMapRef:
+                name: catalog-db-configmap
+  selector:
+    matchLabels:
+      app: catalog-db
